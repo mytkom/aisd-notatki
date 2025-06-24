@@ -35,6 +35,49 @@ W zadaniu tym można wykorzystać modyfikację \hyperref[KMP]{algorytmu KMP}, kt
 
 \subsection{Szukanie przynajmniej połowy wzorca (8.2)}
 
+\paragraph{Treść.}
+Dany jest wzorzec $x$ oraz napis $y$. Zaprojektuj algorytm, który w czasie $O(|x| + |y|)$ rozstrzygnie, czy $y$ zawiera przynajmniej połowę wzorca (dokładniej: czy istnieje spójny fragment wzorca $x$ o długości przynajmniej $\frac{|x|}{2}$, który występuje w $y$).
+
+\paragraph{Rozwiązanie.}
+Możemy rozwiązać to zadanie w następujący sposób:
+
+\begin{enumerate}
+	\item Konkatenacja: Tworzymy nowy napis $z = x \# y$, gdzie $\#$ to znak nieistniejący w alfabecie wzorca i tekstu.
+	\item Obliczamy tablicę prefiksową $P$ dla napisu $z$ (tak jak w algorytmie KMP).
+	\item Przechodzimy przez tablicę $P$ na pozycjach odpowiadających tekstowi $y$ i sprawdzamy, czy istnieje wartość $P[i] \geq \lceil |x|/2 \rceil$.
+\end{enumerate}
+
+Kroki 2 i 3 można połączyć w jedną pętlę -- podczas obliczania tablicy $P$ od razu sprawdzamy, czy pojawiła się wartość spełniająca warunek.
+
+\begin{algorithm}[H]
+	\caption{Czy $y$ zawiera spójny fragment wzorca $x$ o długości co najmniej $|x|/2$}
+	\begin{algorithmic}[1]
+		\Procedure{ContainsHalfPattern}{$x$: napis, $y$: napis}
+			\State $z \gets x + \# + y$ \Comment{$\#$ nie występuje w alfabecie}
+			\State $m \gets |x|$
+			\State $n \gets |y|$
+			\State $P[0] \gets 0$
+			\State $half \gets \lceil m/2 \rceil$
+			\For{$i = 1$ \textbf{to} $m + n$}
+				\State $j \gets P[i-1]$
+				\While{$j > 0$ \textbf{and} $z[i] \neq z[j]$}
+					\State $j \gets P[j-1]$
+				\EndWhile
+				\If{$z[i] = z[j]$}
+					\State $j \gets j + 1$
+				\EndIf
+				\State $P[i] \gets j$
+				\If{$i > m$ \textbf{and} $P[i] \geq half$}
+					\State \Return \textbf{true}
+				\EndIf
+			\EndFor
+			\State \Return \textbf{false}
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Złożoność czasowa algorytmu to $O(|x| + |y|)$.
+
 \subsection{Dopasowanie wzorca ze znakami nieznaczącymi typu '\texttt{?}' (8.4)}
 \label{zadanie8.4}
 \paragraph{Treść.}

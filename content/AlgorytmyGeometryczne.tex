@@ -231,7 +231,7 @@ Struktura \textit{Rectangle} tworzona jest przez zmienne \textit{MinX, MinY, Max
 		\State \textit{Events}.PushBack($R[i]$.MaxX, \false, $i$)
 		\EndFor
 		\State Posortuj rosnąco \textit{Events }względem zmiennej \textit{Coord}
-		\State Niech \textit{currentSegments} oznacza % oznacza cooo? :(
+		\State Niech \textit{currentSegments} oznacza zbiór lewych boków prostokątów, które są aktualnie przecinane przez linię zamiatającą
 		\State Niech \textit{startPoint} oznacza początek ciągłej sumy odcinków
 		\State Niech \textit{area} oznacza aktualnie policzone pole
 		
@@ -382,10 +382,10 @@ miotła znajduje się w punkcie przecięcia.
 	dwóch odcinków $s_1$ oraz $s_2$.
 \end{obs}
 
-Powyższa obserwacja pozwala wywioskować, że aktualizacja w momencie 
+Powyższa obserwacja pozwala wywnioskować, że aktualizacja w momencie 
 natrafienia miotły na punkt przecięcia dwóch odcinków powinna polegać
 na zamianie miejscami dwóch odcinków w $Y$-strukturze, których punkt przecięcia znaleźliśmy. 
-Odpowiada za to wcześniej wspomniania funkcja Interchange.
+Odpowiada za to wcześniej wspominania funkcja Interchange.
 
 W tym celu wprowadzimy nowy typ \textit{zdarzenia} -- natrafienie na punkt 
 przecięcia. Zdarzenie to będzie przechowywać dwa przecinające się 
@@ -428,7 +428,7 @@ Taką przykładową sytuację ilustruje rysunek \ref{fig:zamiatanie_kontrprzykla
 			oraz
 			$x$-owa współrzędna tego przecięcia jest większa niż $x_p$}
 		\parState {Dodaj do $X$ \textit{zdarzenie} zawierające $s$, $Y$.Above($s$)
-		albo $Y$.below($s$)\footnotemark \, oraz ich punkt przecięcia }
+		albo $Y$.Below($s$)\footnotemark{}\, oraz ich punkt przecięcia }
 		\EndparIf
 		\ElsIf{$p$ jest końcem odcinka $s$}
 		\parIf{$Y$.above($s$) przecina się z $Y$.below($s$) oraz $x$-owa współrzędna tego przecięcia jest większa niż $x_p$}
